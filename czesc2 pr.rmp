@@ -13,7 +13,7 @@
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
       <operator activated="true" class="retrieve" compatibility="10.1.002" expanded="true" height="68" name="Retrieve page-blocks" width="90" x="112" y="136">
-        <parameter key="repository_entry" value="//Local Repository/data/ring"/>
+        <parameter key="repository_entry" value="//Local Repository/data/thyroid"/>
       </operator>
       <operator activated="true" class="concurrency:cross_validation" compatibility="10.1.002" expanded="true" height="145" name="Cross Validation" width="90" x="380" y="136">
         <parameter key="split_on_batch_attribute" value="false"/>
@@ -48,6 +48,16 @@
             <parameter key="k" value="3"/>
             <parameter key="Threshold" value="0.1"/>
           </operator>
+          <operator activated="true" class="log" compatibility="10.1.002" expanded="true" height="82" name="Log" width="90" x="380" y="238">
+            <parameter key="filename" value="C:/Users/user/Desktop/msi/projekt2/WiSlog.log"/>
+            <list key="log">
+              <parameter key="WekaIsSelectionLogAfter" value="operator.Weka IS selection.value.Instances_after_selection"/>
+              <parameter key="WekaIsSelectionLogBefore" value="operator.Weka IS selection.value.Instances_beafore_selection"/>
+            </list>
+            <parameter key="sorting_type" value="none"/>
+            <parameter key="sorting_k" value="100"/>
+            <parameter key="persistent" value="false"/>
+          </operator>
           <operator activated="true" class="concurrency:parallel_decision_tree" compatibility="10.1.002" expanded="true" height="103" name="Decision Tree" width="90" x="447" y="34">
             <parameter key="criterion" value="gini_index"/>
             <parameter key="maximal_depth" value="10"/>
@@ -63,7 +73,8 @@
           <connect from_op="Weight by Correlation" from_port="weights" to_op="Select by Weights" to_port="weights"/>
           <connect from_op="Weight by Correlation" from_port="example set" to_op="Select by Weights" to_port="example set input"/>
           <connect from_op="Select by Weights" from_port="example set output" to_op="Weka IS selection" to_port="ExampleSet"/>
-          <connect from_op="Weka IS selection" from_port="Prototypes" to_op="Decision Tree" to_port="training set"/>
+          <connect from_op="Weka IS selection" from_port="Prototypes" to_op="Log" to_port="through 1"/>
+          <connect from_op="Log" from_port="through 1" to_op="Decision Tree" to_port="training set"/>
           <connect from_op="Decision Tree" from_port="model" to_port="model"/>
           <portSpacing port="source_training set" spacing="0"/>
           <portSpacing port="sink_model" spacing="0"/>
